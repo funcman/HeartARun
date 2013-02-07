@@ -4,6 +4,7 @@ ZTY Studio
 ***********************************************************/
 
 #include "game_scene.h"
+#include <windows.h>
 
 extern Scene* scene;
 
@@ -27,78 +28,78 @@ std::vector< std::vector<int> > levels;
 //int level[] = {0,1,0,0,0,1,1};
 
 GameScene::GameScene() {
-    hge_ = hgeCreate(HGE_VERSION);
+    bsgl_ = bsglCreate(BSGL_VERSION);
 
-    bg_tex_ = hge_->Texture_Load("media/bg.png");
+    bg_tex_ = bsgl_->Texture_Load("media/bg.bmp");
     if( bg_tex_ == 0 ) {
-        MessageBoxA(NULL, hge_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+        MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
     }
-    bg_ = new hgeSprite(bg_tex_, 0, 0, 800, 600);
+    bg_ = new bsglSprite(bg_tex_, 0, 0, 800, 600);
 
-    gameover_tex_ = hge_->Texture_Load("media/gameover.png");
+    gameover_tex_ = bsgl_->Texture_Load("media/gameover.bmp");
     if( gameover_tex_ == 0 ) {
-        MessageBoxA(NULL, hge_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+        MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
     }
-    gameover_ = new hgeSprite(gameover_tex_, 0, 0, 320, 240);
+    gameover_ = new bsglSprite(gameover_tex_, 0, 0, 320, 240);
 
-    poker_tex_ = hge_->Texture_Load("media/poker.png");
+    poker_tex_ = bsgl_->Texture_Load("media/poker.bmp");
     if( poker_tex_ == 0 ) {
-        MessageBoxA(NULL, hge_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+        MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
     }
-    poker_ = new hgeSprite(poker_tex_, 0, 0, 70, 92);
+    poker_ = new bsglSprite(poker_tex_, 0, 0, 70, 92);
 
-    line_tex_ = hge_->Texture_Load("media/line.png");
+    line_tex_ = bsgl_->Texture_Load("media/line.bmp");
     if( line_tex_ == 0 ) {
-        MessageBoxA(NULL, hge_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+        MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
     }
-    line_ = new hgeSprite(line_tex_, 0, 0, 116, 268);
+    line_ = new bsglSprite(line_tex_, 0, 0, 116, 268);
 
-    beat_tex_ = hge_->Texture_Load("media/beat.png");
+    beat_tex_ = bsgl_->Texture_Load("media/beat.bmp");
     if( beat_tex_ == 0 ) {
-        MessageBoxA(NULL, hge_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+        MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
     }
-    beat_ = new hgeSprite(beat_tex_, 0, 0, 116, 268);
+    beat_ = new bsglSprite(beat_tex_, 0, 0, 116, 268);
 
-    red_tex_ = hge_->Texture_Load("media/red.png");
+    red_tex_ = bsgl_->Texture_Load("media/red.bmp");
     if( red_tex_ == 0 ) {
-        MessageBoxA(NULL, hge_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+        MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
     }
-    red_ = new hgeSprite(red_tex_, 0, 0, 116, 268);
+    red_ = new bsglSprite(red_tex_, 0, 0, 116, 268);
 
-    run_tex_ = hge_->Texture_Load("media/run.png");
+    run_tex_ = bsgl_->Texture_Load("media/run.bmp");
     if( run_tex_ == 0 ) {
-        MessageBoxA(NULL, hge_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+        MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
     }
-    run_ = new hgeAnimation(run_tex_, 6, 6, 0, 0, 186, 152);
+    run_ = new bsglAnimation(run_tex_, 6, 6, 0, 0, 186, 152);
 
-    blood_tex_ = hge_->Texture_Load("media/blood.png");
+    blood_tex_ = bsgl_->Texture_Load("media/blood.bmp");
     if( blood_tex_ == 0 ) {
-        MessageBoxA(NULL, hge_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+        MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
     }
-    blood_ = new hgeSprite(blood_tex_, 0, 0, 158, 126);
+    blood_ = new bsglSprite(blood_tex_, 0, 0, 158, 126);
 
-    font_ = new hgeFont("media/font.fnt");
-    font_->SetColor(0xFF85BA81);    //字体颜色
+    //font_ = new bsglFont("media/font.fnt");
+    //font_->SetColor(0xFF85BA81);    //字体颜色
 }
 
 GameScene::~GameScene() {
-    delete font_;
+    //delete font_;
     delete blood_;
-    hge_->Texture_Free(blood_tex_);
+    bsgl_->Texture_Free(blood_tex_);
     delete run_;
-    hge_->Texture_Free(run_tex_);
+    bsgl_->Texture_Free(run_tex_);
     delete red_;
-    hge_->Texture_Free(red_tex_);
+    bsgl_->Texture_Free(red_tex_);
     delete beat_;
-    hge_->Texture_Free(beat_tex_);
+    bsgl_->Texture_Free(beat_tex_);
     delete line_;
-    hge_->Texture_Free(line_tex_);
+    bsgl_->Texture_Free(line_tex_);
     delete poker_;
-    hge_->Texture_Free(poker_tex_);
+    bsgl_->Texture_Free(poker_tex_);
     delete gameover_;
-    hge_->Texture_Free(gameover_tex_);
+    bsgl_->Texture_Free(gameover_tex_);
     delete bg_;
-    hge_->Texture_Free(bg_tex_);
+    bsgl_->Texture_Free(bg_tex_);
 }
 
 void GameScene::Restart() {
@@ -129,7 +130,7 @@ void GameScene::Restart() {
     int iii = 0;
     for( ; iii<6; iii++) b.push_back(0);
     UpdateLevel(800.0f+116.0f, b);//平线加进去
-    UpdateLevel(800.0f-(iii-1)*116.0f, levels[hge_->Random_Int(0,levels.size()-1)]);//随机一个障碍参数进去
+    UpdateLevel(800.0f-(iii-1)*116.0f, levels[bsgl_->Random_Int(0,levels.size()-1)]);//随机一个障碍参数进去
     distance_ = 0.0f;
 }
 
@@ -147,32 +148,33 @@ void GameScene::UpdateLevel(float last, std::vector<int> level) {
 }
 
 bool GameScene::Update() {
-    float x, y;
-    hge_->Input_GetMousePos(&x, &y);
+    int x, y;
+    x = bsgl_->Control_GetMouseX();
+    y = bsgl_->Control_GetMouseY();
 
     // 还没有嗝屁则更新游戏逻辑
     if( !game_over_ ) {
         // 加速
-        if( hge_->Input_GetKeyState(HGEK_CTRL) ) {
+        if( bsgl_->Control_IsPassing(INP_CTRLL) ) {
             speed_ += 1.0f;
             if(speed_>20.0f) speed_=20.0f;
             poker_speed_ -= 0.1f;
             if(poker_speed_<-1.0f) poker_speed_ = -1.0f;
-        }else if( !hge_->Input_GetKeyState(HGEK_SHIFT) ) {
+        }else if( !bsgl_->Control_IsPassing(INP_SHIFTR) ) {
             speed_ -= 0.3f;
             if(speed_<4.0f) speed_=4.0f;
             poker_speed_ += 0.1f;
             if(poker_speed_>2.0f) poker_speed_ = 2.0f;
         }
         // 减速
-        if( hge_->Input_GetKeyState(HGEK_SHIFT) ) {
+        if( bsgl_->Control_IsPassing(INP_SHIFTR) ) {
             speed_ -= 1.0f;
             if(speed_<2.0f) speed_=2.0f;
             poker_speed_ += 0.3f;
             if(poker_speed_>2.0f) poker_speed_ = 2.0f;
         }
         // 跳
-        if( hge_->Input_GetKeyState(HGEK_ALT) && !in_air_ ) {
+        if( bsgl_->Control_IsPassing(INP_ALTL) && !in_air_ ) {
             yinc_ = -15.0f;
             in_air_ = true;
         }
@@ -186,7 +188,7 @@ bool GameScene::Update() {
         }
         // 根据速度设置动画
         run_->SetSpeed(speed_/4.0f*6);
-        run_->Update(hge_->Timer_GetDelta());
+        run_->Update(bsgl_->Timer_GetDelta());
         // 移动，其实是移动障碍
         int c = 0;
         for( std::list<Beat>::iterator itr = beats.begin(); itr!=beats.end(); itr++ ) {
@@ -203,7 +205,7 @@ bool GameScene::Update() {
         }
         // 如果所有障碍都进入场景中，就添加一次障碍，随机添加某一组障碍参数
         if( beats.back().pos >= 0.0f ) {
-            UpdateLevel(beats.back().pos, levels[hge_->Random_Int(0,levels.size()-1)]);
+            UpdateLevel(beats.back().pos, levels[bsgl_->Random_Int(0,levels.size()-1)]);
         }
 
         // 扑克的位置，如果扑克被甩到初始位置，就停在那
@@ -218,12 +220,12 @@ bool GameScene::Update() {
                 // 按心的速度播
                 if( speed_ > 4.0f+sound_speed ) {
                     if( speed_ > 4.0f+sound_speed*2) {
-                        hge_->Effect_Play(beat3);
+                        //bsgl_->Effect_Play(beat3);
                     }else {
-                        hge_->Effect_Play(beat2);
+                        //bsgl_->Effect_Play(beat2);
                     }
                 }else {
-                    hge_->Effect_Play(beat1);
+                    //bsgl_->Effect_Play(beat1);
                 }
                 itr->flag3 = false;
             }
@@ -250,7 +252,7 @@ bool GameScene::Update() {
 
     // 嗝屁时请按重玩
     else {
-        if( hge_->Input_KeyUp(HGEK_LBUTTON) ) {
+        if( bsgl_->Control_IsUp(INP_MOUSEL) ) {
             if( x>=448 && x<508 && y>=336 && y<396 ) {
                 Restart();
             }
@@ -258,8 +260,8 @@ bool GameScene::Update() {
     }
 
     // 渲染
-    hge_->Gfx_BeginScene();
-    hge_->Gfx_Clear(0);
+    bsgl_->Gfx_BeginScene();
+    bsgl_->Gfx_Clear(0);
 
     // 渲染背景
     bg_->Render(0,0);
@@ -285,10 +287,10 @@ bool GameScene::Update() {
     if( game_over_ ) {
         gameover_->Render((800-320)/2, (600-240)/2);
         // 打印分数，即距离
-        font_->printf(515, 275, HGETEXT_RIGHT, "%d M", (int)distance_);
+        //font_->printf(515, 275, BSGLTEXT_RIGHT, "%d M", (int)distance_);
     }
 
-    hge_->Gfx_EndScene();
+    bsgl_->Gfx_EndScene();
 
     return false;
 }

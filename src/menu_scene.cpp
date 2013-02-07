@@ -4,6 +4,7 @@ ZTY Studio
 ***********************************************************/
 
 #include "menu_scene.h"
+#include <windows.h>
 #include "credit_scene.h"
 #include "game_scene.h"
 
@@ -13,19 +14,19 @@ extern GameScene* game;
 
 MenuScene::MenuScene() {
     // 引擎对象其实是一个单件，如果已经存在就不Create
-    hge_ = hgeCreate(HGE_VERSION);
+    bsgl_ = bsglCreate(BSGL_VERSION);
 
-    menu_tex_ = hge_->Texture_Load("media/menu.png");
+    menu_tex_ = bsgl_->Texture_Load("media/menu.bmp");
     if( menu_tex_ == 0 ) {
-        MessageBoxA(NULL, hge_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+        MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
     }
-    menu_ = new hgeSprite(menu_tex_, 0, 0, 800, 600);
+    menu_ = new bsglSprite(menu_tex_, 0, 0, 800, 600);
 
-    story_tex_ = hge_->Texture_Load("media/story.jpg");
+    story_tex_ = bsgl_->Texture_Load("media/story.bmp");
     if( story_tex_ == 0 ) {
-        MessageBoxA(NULL, hge_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+        MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
     }
-    story_ = new hgeSprite(story_tex_, 0, 0, 800, 600);
+    story_ = new bsglSprite(story_tex_, 0, 0, 800, 600);
     story_->SetColor(0x00FFFFFF);
 
     // 一开始不讲故事
@@ -34,16 +35,17 @@ MenuScene::MenuScene() {
 
 MenuScene::~MenuScene() {
     delete story_;
-    hge_->Texture_Free(story_tex_);
+    bsgl_->Texture_Free(story_tex_);
     delete menu_;
-    hge_->Texture_Free(menu_tex_);
+    bsgl_->Texture_Free(menu_tex_);
 }
 
 bool MenuScene::Update() {
-    float x, y;
-    hge_->Input_GetMousePos(&x, &y);
+    int x, y;
+    x = bsgl_->Control_GetMouseX();
+    y = bsgl_->Control_GetMouseY();
 
-    if( hge_->Input_KeyUp(HGEK_LBUTTON) ) {
+    if( bsgl_->Control_IsUp(INP_MOUSEL) ) {
         if( x>= 190 && x<420 ) {
             // 按Start先讲故事
             if( y>=280 && y<350 ) {
@@ -61,8 +63,8 @@ bool MenuScene::Update() {
         }
     }
 
-    hge_->Gfx_BeginScene();
-    hge_->Gfx_Clear(0);
+    bsgl_->Gfx_BeginScene();
+    bsgl_->Gfx_Clear(0);
 
     // 如果讲故事就渲染故事的图，有淡入淡出效果
     if(!tell_) {
@@ -72,7 +74,7 @@ bool MenuScene::Update() {
         static int fff = 30*6;
         fff--;
         // 其实没等完全淡完就切到游戏里了，怀疑淡完再切有问题，没验证，凑合着搞；或者按Enter切
-        if( fff < 3 || hge_->Input_KeyUp(HGEK_ENTER) ) {
+        if( fff < 3 || bsgl_->Control_IsUp(INP_ENTER) ) {
             game->Restart();
             scene = game;
         }
@@ -88,7 +90,7 @@ bool MenuScene::Update() {
         story_->Render(0,0);
     }
 
-    hge_->Gfx_EndScene();
+    bsgl_->Gfx_EndScene();
 
     return false;
 }

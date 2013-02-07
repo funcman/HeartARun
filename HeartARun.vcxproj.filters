@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\credit_scene.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu_scene.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game_scene.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\credit_scene.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game_scene.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu_scene.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{9713ef42-6699-4a0d-86b2-8bae3010f9b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source">
+      <UniqueIdentifier>{ab0c5108-536d-4393-8f4f-bb00e4a83c78}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -9,7 +9,7 @@ ZTY Studio
 #define HAR_CREDIT_SCENE_H
 
 #include "scene.h"
-#include "../include/hgesprite.h"
+#include <bsglsprite.h>
 
 class CreditScene : public Scene {
 public:
@@ -18,10 +18,10 @@ public:
 
     bool Update();
 private:
-    HGE* hge_;
+    BSGL* bsgl_;
     // ¾ÍÒ»Í¼
     HTEXTURE credit_tex_;
-    hgeSprite* credit_;
+    bsglSprite* credit_;
 };
 
 #endif//HAR_CREDIT_SCENE_H

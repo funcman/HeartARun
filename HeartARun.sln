@@ -1,7 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HeartARun", "HeartARun.vcproj", "{A8802787-1480-49D4-B42F-4D6EFBE40C70}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HeartARun", "HeartARun.vcxproj", "{AD37C055-EB24-4E68-8149-4EB6645FC6B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A8802787-1480-49D4-B42F-4D6EFBE40C70}.Debug|Win32.ActiveCfg = Debug|Win32
-		{A8802787-1480-49D4-B42F-4D6EFBE40C70}.Debug|Win32.Build.0 = Debug|Win32
-		{A8802787-1480-49D4-B42F-4D6EFBE40C70}.Release|Win32.ActiveCfg = Release|Win32
-		{A8802787-1480-49D4-B42F-4D6EFBE40C70}.Release|Win32.Build.0 = Release|Win32
+		{AD37C055-EB24-4E68-8149-4EB6645FC6B7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AD37C055-EB24-4E68-8149-4EB6645FC6B7}.Debug|Win32.Build.0 = Debug|Win32
+		{AD37C055-EB24-4E68-8149-4EB6645FC6B7}.Release|Win32.ActiveCfg = Release|Win32
+		{AD37C055-EB24-4E68-8149-4EB6645FC6B7}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
