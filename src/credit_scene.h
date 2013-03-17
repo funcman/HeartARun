@@ -3,8 +3,6 @@ Heart A Run
 ZTY Studio
 ***********************************************************/
 
-// 作者
-
 #ifndef HAR_CREDIT_SCENE_H
 #define HAR_CREDIT_SCENE_H
 
@@ -19,7 +17,7 @@ public:
     bool Update();
 private:
     BSGL* bsgl_;
-    // 就一图
+    // only one image
     HTEXTURE credit_tex_;
     bsglSprite* credit_;
 };

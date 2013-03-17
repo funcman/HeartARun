@@ -22,65 +22,65 @@ public:
     bool Update();
 private:
     BSGL* bsgl_;
-    // 背景
+    // background
     HTEXTURE bg_tex_;
     bsglSprite* bg_;
-    // 游戏结束
+    // game over ui
     HTEXTURE gameover_tex_;
     bsglSprite* gameover_;
-    // 追心的扑克
+    // poker
     HTEXTURE poker_tex_;
     bsglSprite* poker_;
-    // 平的线
+    // straight line
     HTEXTURE line_tex_;
     bsglSprite* line_;
-    // 一般的心跳山峰
+    // normal wave crest
     HTEXTURE beat_tex_;
     bsglSprite* beat_;
-    // 加血的
+    // blood wave crest
     HTEXTURE red_tex_;
     bsglSprite* red_;
-    // 表示血量的底图
+    // hp
     HTEXTURE blood_tex_;
     bsglSprite* blood_;
 
-    // 跑步的动画
+    // run animation
     HTEXTURE run_tex_;
     bsglAnimation* run_;
 
-    float y_;           //心的高度
-    float yinc_;        //心的y轴加速度
-    float g_;           //重力
-    bool in_air_;       //正在空中
+    float y_;           //y of hero
+    float yinc_;        //vertical acceleration of hero
+    float g_;           //big G
+    bool in_air_;       //in air, jumping
     int heath_;         //HP
 
-    // 心电图元素
+    // electrocardiogram element
     struct Beat {
-        int type;   //0支线1一般峰2加血峰
-        float pos;  //位置（0点在右边，方向是向左，比较奇怪的设定 = =）
-        bool flag1; //撞上了
-        bool flag2; //加过血了
-        bool flag3; //音效放过了
+        int type;   //0 straight line,1 normal 2 blood
+        float pos;  //position (0 point is right, direction to the left, strange~)
+        bool flag1; //has been hit
+        bool flag2; //has been treated
+        bool flag3; //has played
     };
 
-    // 是否嗝屁
+    // game over
     bool game_over_;
-    // 扑克位置
+    // poker position
     float poker_pos_;
-    // 心的速度
+    // speed of heart
     float speed_;
-    // 扑克速度
+    // speed of poker
     float poker_speed_;
-    // 心电图链表
+    // list of electrocardiogram beats
     std::list<Beat> beats;
 
-    // 跑了多远
+    // distance
     float distance_;
 
-    // 字～
+    // font
     //bsglFont* font_;
 
-    // 更新关卡，last是最后一个心电图元素的位置，好接上
+    // update level, 'last' is the last electrocardiogram beat position
     void UpdateLevel(float last, std::vector<int> level);
 };
 

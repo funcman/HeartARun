@@ -4,8 +4,9 @@ ZTY Studio
 ***********************************************************/
 #if defined(WIN32)
 #include <windows.h>
-#endif
+#elif defined(__MACH__)
 #include <SDL/SDL.h>
+#endif
 #include <bsgl.h>
 #include "scene.h"
 #include "menu_scene.h"
@@ -14,17 +15,18 @@ ZTY Studio
 
 BSGL* bsgl = 0;
 
-// 场景
+// Scenes
 Scene* scene = 0;
 MenuScene* menu = 0;
 CreditScene* credit = 0;
 GameScene* game = 0;
 
-// 音效
+// Effects
 //HEFFECT beat1;
 //HEFFECT beat2;
 //HEFFECT beat3;
 
+// for non-win32
 #if !defined(WIN32)
 #include <unistd.h>
 #include <time.h>
@@ -32,7 +34,6 @@ GameScene* game = 0;
 #include <mach/clock.h>
 #include <mach/mach.h>
 #endif
-
 unsigned int timeGetTime() {
     struct timespec ts;
 // OS X does not have clock_gettime, use clock_get_time
@@ -55,7 +56,7 @@ bool FrameFunc() {
     bsgl->Control_GetState();
 
 #ifndef NDEBUG
-    // 切换多边形模式
+    // swtich polygon mode
     if( bsgl->Control_IsUp(INP_TAB) ) {
         static int mode = 0;
         ++mode;
@@ -64,7 +65,7 @@ bool FrameFunc() {
     }
 #endif
 
-    // 按ESC退出
+// push ESC to exit on windows
 #if defined(WIN32)
     if( bsgl->Control_IsPassing(INP_ESC) ) {
         if( MessageBoxA(0, "Really want to quit this game?", "Confirmation", MB_YESNO|MB_ICONQUESTION ) == IDYES ) {
@@ -73,7 +74,7 @@ bool FrameFunc() {
     }
 #endif
 
-    // 场景更新
+    // update
     return scene->Update();
 }
 
@@ -86,17 +87,17 @@ int main(int argc, char** argv) {
 
     bsgl->System_SetStateInt(BSGL_SCREENWIDTH, 800);
     bsgl->System_SetStateInt(BSGL_SCREENHEIGHT, 600);
-    bsgl->System_SetStateFunc(BSGL_RENDERFUNC, FrameFunc); //设置帧处理函数
+    bsgl->System_SetStateFunc(BSGL_RENDERFUNC, FrameFunc);  // set the frame function
     bsgl->System_SetStateInt(BSGL_NUMOFLFPS, 1);
-    bsgl->System_SetStateInt(BSGL_NUMOFRFPS, 30);              //每秒30帧
-    bsgl->System_SetStateString(BSGL_TITLE, "Heart A Run"); //标题
-    bsgl->System_SetStateBool(BSGL_WINDOWED, true);       //窗口模式
-    //bsgl->System_SetState(BSGL_HIDEMOUSE, false);     //不隐藏鼠标
-    bsgl->System_SetStateString(BSGL_LOGFILE, "game.log");  //日志
+    bsgl->System_SetStateInt(BSGL_NUMOFRFPS, 30);           // 30 fps
+    bsgl->System_SetStateString(BSGL_TITLE, "Heart A Run"); // windows title
+    bsgl->System_SetStateBool(BSGL_WINDOWED, true);         // window mode
+    //bsgl->System_SetState(BSGL_HIDEMOUSE, false);         // don't hide mouse
+    bsgl->System_SetStateString(BSGL_LOGFILE, "game.log");  // the log file
 
 
     if(bsgl->System_Initiate()) {
-        // 初始化游戏对象
+        // game objects initialization
         menu = new MenuScene();
         credit = new CreditScene();
         game = new GameScene();
@@ -104,16 +105,16 @@ int main(int argc, char** argv) {
         //beat2 = bsgl->Effect_Load("media/beat2.ogg");
         //beat3 = bsgl->Effect_Load("media/beat3.ogg");
 
-        // 初始场景为菜单（那个BSGL LOGO是引擎自动加的）
+        // the begining scene is meun
         scene = menu;
 
-        // 初始随机种子
+        // random seed initialization
         bsgl->Random_Seed(timeGetTime());
 
-        // 启动引擎，进入游戏主循环，主循环中不断地刷帧处理函数
+        // engine start, into the game loop, and process the frame function in each cycle
         bsgl->System_Start();
 
-        // 释放游戏对象
+        // game objects free
         //bsgl->Effect_Free(beat3);
         //bsgl->Effect_Free(beat2);
         //bsgl->Effect_Free(beat1);
@@ -121,7 +122,7 @@ int main(int argc, char** argv) {
         delete credit;
         delete menu;
     }else {
-        // 错误信息
+        // error information
 #if defined(WIN32)
         MessageBoxA(NULL, bsgl->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
 #else

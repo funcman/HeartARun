@@ -14,7 +14,7 @@ extern HEFFECT beat1;
 extern HEFFECT beat2;
 extern HEFFECT beat3;
 
-// 若干障碍参数，012是心电图元素的type
+// obstacles data, 012 are types of electrocardiogram
 int level1[] = {0,1,0,0,0,1,1,0,0,1,0,0,2,0,0};
 size_t lsize1 = sizeof(level1)/sizeof(int);
 int level2[] = {0,0,0,2,1,1,0,0,1,0,0,1,0,0};
@@ -25,7 +25,7 @@ int level4[] = {0,1,0,0,1,0,0,1,0,0,0,1,0,0,0,1,2};
 size_t lsize4 = sizeof(level4)/sizeof(int);
 int level5[] = {0,0,1,0,0,0,0,1,1,2,0,0,1,0};
 size_t lsize5 = sizeof(level5)/sizeof(int);
-// 障碍数组
+// obstacles arrays
 std::vector< std::vector<int> > levels;
 //int level[] = {0,1,0,0,0,1,1};
 
@@ -113,7 +113,7 @@ GameScene::GameScene() {
     blood_ = new bsglSprite(blood_tex_, 0, 0, 158, 126);
 
     //font_ = new bsglFont("media/font.fnt");
-    //font_->SetColor(0xFF85BA81);    //字体颜色
+    //font_->SetColor(0xFF85BA81);    //font color
 }
 
 GameScene::~GameScene() {
@@ -138,17 +138,17 @@ GameScene::~GameScene() {
 
 void GameScene::Restart() {
     game_over_ = false;
-    poker_pos_ = 50.0f; //扑克初始位置
-    speed_ = 4.0f;      //正常心的速度
-    poker_speed_ = 1.8f;//扑克的速度
+    poker_pos_ = 50.0f; //initial position of poker
+    speed_ = 4.0f;      //speed of normal heart
+    poker_speed_ = 1.8f;//speed of poker
     beats.clear();
     run_->Play();
     yinc_ = 0.0f;
     g_ = 0.98f;
     in_air_ = false;
-    y_ = 396;           //平地的y轴高度
-    heath_ = 5;         //五滴血
-    // 填关卡
+    y_ = 396;           //height of ground on y axis
+    heath_ = 5;         //hp is 5
+    // fill levels
     std::vector<int> l1(level1, level1+lsize1);
     levels.push_back(l1);
     std::vector<int> l2(level2, level2+lsize2);
@@ -159,12 +159,12 @@ void GameScene::Restart() {
     levels.push_back(l4);
     std::vector<int> l5(level5, level5+lsize5);
     levels.push_back(l5);
-    // 游戏刚开始时都是平的没障碍
+    // no obstacle in the game begining
     std::vector<int> b;
     int iii = 0;
     for( ; iii<6; iii++) b.push_back(0);
-    UpdateLevel(800.0f+116.0f, b);//平线加进去
-    UpdateLevel(800.0f-(iii-1)*116.0f, levels[bsgl_->Random_Int(0,levels.size()-1)]);//随机一个障碍参数进去
+    UpdateLevel(800.0f+116.0f, b);//fill straight lines
+    UpdateLevel(800.0f-(iii-1)*116.0f, levels[bsgl_->Random_Int(0,levels.size()-1)]);//random fill one obstacles date
     distance_ = 0.0f;
 }
 
@@ -186,9 +186,9 @@ bool GameScene::Update() {
     x = bsgl_->Control_GetMouseX();
     y = bsgl_->Control_GetMouseY();
 
-    // 还没有嗝屁则更新游戏逻辑
+    // update gameplay until game over
     if( !game_over_ ) {
-        // 加速
+        // speed up
         if( bsgl_->Control_IsPassing(INP_CTRLL) ) {
             speed_ += 1.0f;
             if(speed_>20.0f) speed_=20.0f;
@@ -200,14 +200,14 @@ bool GameScene::Update() {
             poker_speed_ += 0.1f;
             if(poker_speed_>2.0f) poker_speed_ = 2.0f;
         }
-        // 减速
+        // speed cut
         if( bsgl_->Control_IsPassing(INP_SHIFTR) ) {
             speed_ -= 1.0f;
             if(speed_<2.0f) speed_=2.0f;
             poker_speed_ += 0.3f;
             if(poker_speed_>2.0f) poker_speed_ = 2.0f;
         }
-        // 跳
+        // jump
         if( bsgl_->Control_IsPassing(INP_ALTL) && !in_air_ ) {
             yinc_ = -15.0f;
             in_air_ = true;
@@ -220,38 +220,38 @@ bool GameScene::Update() {
                 in_air_ = false;
             }
         }
-        // 根据速度设置动画
+        // set play speed by heart speed
         run_->SetSpeed(speed_/4.0f*6);
         run_->Update(bsgl_->Timer_GetDelta());
-        // 移动，其实是移动障碍
+        // move, in fact it's obstacles moving
         int c = 0;
         for( std::list<Beat>::iterator itr = beats.begin(); itr!=beats.end(); itr++ ) {
             itr->pos += speed_;
-            // 统计有多少障碍不需要了
+            // count how many obstacles are not needed
             if(itr->pos > 1500) {
                 c++;
             }
         }
         distance_ += speed_;
-        // 不需要的障碍就删掉，反正是队列，直接按数目从一头删除就行
+        // delete unnecessary obstacles, just pop the front of queue
         for( int i=0; i<c; i++) {
             beats.pop_front();
         }
-        // 如果所有障碍都进入场景中，就添加一次障碍，随机添加某一组障碍参数
+        // if all obstacles have been in the game scene, just add obstacles
         if( beats.back().pos >= 0.0f ) {
             UpdateLevel(beats.back().pos, levels[bsgl_->Random_Int(0,levels.size()-1)]);
         }
 
-        // 扑克的位置，如果扑克被甩到初始位置，就停在那
+        // if the position of poker is initial position, just stop
         poker_pos_+=poker_speed_;
         if(poker_pos_ < 50.0f) poker_pos_=50.0f;
 
-        // 碰撞判定
+        // collision decision
         for( std::list<Beat>::iterator itr = beats.begin(); itr!=beats.end(); itr++ ) {
             float sound_speed = 20.0f-4.0f/3;
-            // 播音效
+            // play sound effects
             if( itr->type!=0 && 800.0f-itr->pos <=190.0f && itr->flag3 ) {
-                // 按心的速度播
+                // by heart speed
                 if( speed_ > 4.0f+sound_speed ) {
                     if( speed_ > 4.0f+sound_speed*2) {
                         //bsgl_->Effect_Play(beat3);
@@ -263,14 +263,14 @@ bool GameScene::Update() {
                 }
                 itr->flag3 = false;
             }
-            // 碰撞
+            // collision
             if( itr->type!=0 && itr->flag1 && 800.0f-itr->pos+20.0f < 180.0f+170.0f*0.3f && 800.0f-itr->pos+100.0f > 180.0f) {
                 if( y_ > 600-230 ) {
-                    // 掉血
+                    // be injured
                     heath_--;
                     itr->flag1 = false;
                 }else if(itr->type==2 && itr->flag2 && itr->flag1) {
-                    // 加血
+                    // treat
                     heath_++;
                     if(heath_>5) heath_=5;
                     itr->flag2 = false;
@@ -278,13 +278,13 @@ bool GameScene::Update() {
             }
         }
 
-        // 判断是否追上
+        // test whether the catch up
         if( poker_pos_ > 699 || heath_<=0 ) {
             game_over_ = true;
         }
     }
 
-    // 嗝屁时请按重玩
+    // restart
     else {
         if( bsgl_->Control_IsUp(INP_MOUSEL) ) {
             if( x>=448 && x<508 && y>=336 && y<396 ) {
@@ -293,34 +293,34 @@ bool GameScene::Update() {
         }
     }
 
-    // 渲染
+    // render
     bsgl_->Gfx_BeginScene();
     bsgl_->Gfx_Clear(0);
 
-    // 渲染背景
+    // render background
     bg_->Render(0,0);
 
-    // 渲染心电图
+    // render electrocardiogram
     for( std::list<Beat>::iterator itr = beats.begin(); itr!=beats.end(); itr++ ) {
         if(itr->type==0){line_->Render(800.0f-itr->pos, 600-268);}
         if(itr->type==1){beat_->Render(800.0f-itr->pos, 600-268);}
         if(itr->type==2){red_->Render(800.0f-itr->pos, 600-268);}
     }
 
-    // 渲染扑克
+    // render poker
     poker_->Render(poker_pos_, 5);
 
-    // 渲染血量
+    // render hp
     blood_->SetTextureRect(0, 122.0f/5.0*(5-heath_), 158, 122.0f-122.0f/5.0*(5-heath_));
     blood_->RenderEx(180.0f+4.5f, y_+126.0f/5.0*(5-heath_)*0.3f+4.0f, 0, 0.3f, 0.3f);
 
-    // 渲染猪脚
+    // render hero
     run_->RenderEx(180, y_, 0, 0.3f, 0.3f);
 
-    // 如果嗝屁，渲染嗝屁界面
+    // if game over, render the gameover ui
     if( game_over_ ) {
         gameover_->Render((800-320)/2, (600-240)/2);
-        // 打印分数，即距离
+        // print score, namely the distance
         //font_->printf(515, 275, BSGLTEXT_RIGHT, "%d M", (int)distance_);
     }
 

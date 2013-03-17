@@ -15,7 +15,7 @@ extern CreditScene* credit;
 extern GameScene* game;
 
 MenuScene::MenuScene() {
-    // 引擎对象其实是一个单件，如果已经存在就不Create
+    // the engine object is a singleton, don't create if already exists
     bsgl_ = bsglCreate(BSGL_VERSION);
 
     menu_tex_ = bsgl_->Texture_Load("media/menu.bmp");
@@ -39,7 +39,7 @@ MenuScene::MenuScene() {
     story_ = new bsglSprite(story_tex_, 0, 0, 800, 600);
     story_->SetColor(0x00FFFFFF);
 
-    // 一开始不讲故事
+    // don't tell a story in the begining
     tell_ = false;
 }
 
@@ -57,17 +57,17 @@ bool MenuScene::Update() {
 
     if( bsgl_->Control_IsUp(INP_MOUSEL) ) {
         if( x>= 190 && x<420 ) {
-            // 按Start先讲故事
+            // click start to tell a story
             if( y>=280 && y<350 ) {
                 tell_ = true;
             }
-            // 切到Credits页面
+            // switch to the credits scene
             if( y>=390 && y<460 && !tell_ ) {
                 scene = credit;
                 return false;
             }
         }
-        // 退出游戏
+        // game exit
         if( x>660 && y>510) {
             return true;
         }
@@ -76,25 +76,25 @@ bool MenuScene::Update() {
     bsgl_->Gfx_BeginScene();
     bsgl_->Gfx_Clear(0);
 
-    // 如果讲故事就渲染故事的图，有淡入淡出效果
+    // tell the story
     if(!tell_) {
         menu_->Render(0,0);
     }else {
-        // 控制淡入淡出的变量，6秒，每秒30帧
+        // the value of fade controlling, 6s, 30fps
         static int fff = 30*6;
         fff--;
-        // 其实没等完全淡完就切到游戏里了，怀疑淡完再切有问题，没验证，凑合着搞；或者按Enter切
+        // switch by enter
         if( fff < 3 || bsgl_->Control_IsUp(INP_ENTER) ) {
             game->Restart();
             scene = game;
         }
-        // 控制颜色实现的淡入淡出
+        // fade by ccc
         int ccc = story_->GetColor();
-        // 淡入
+        // fade in
         if(fff>=165)
             story_->SetColor(ccc+=0xFF000000/15);
-        // 故事停个几秒
-        // 淡出
+        // pause a few seconds
+        // fade out
         else if(fff<15)
             story_->SetColor(ccc-=0xFF000000/15);
         story_->Render(0,0);

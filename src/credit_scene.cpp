@@ -37,7 +37,7 @@ bool CreditScene::Update() {
     x = bsgl_->Control_GetMouseX();
     y = bsgl_->Control_GetMouseY();
 
-    // 没什么好说的，按返回就回到菜单
+    // return menu
     if( bsgl_->Control_IsUp(INP_MOUSEL) ) {
         if( x>660 && y>510) {
             scene = menu;
@@ -47,7 +47,7 @@ bool CreditScene::Update() {
 
     bsgl_->Gfx_BeginScene();
     bsgl_->Gfx_Clear(0);
-    credit_->Render(0,0);   //渲染上去
+    credit_->Render(0,0);   //render
     bsgl_->Gfx_EndScene();
 
     return false;
