@@ -4,7 +4,9 @@ ZTY Studio
 ***********************************************************/
 
 #include "game_scene.h"
+#if defined(WIN32)
 #include <windows.h>
+#endif
 
 extern Scene* scene;
 
@@ -32,49 +34,81 @@ GameScene::GameScene() {
 
     bg_tex_ = bsgl_->Texture_Load("media/bg.bmp");
     if( bg_tex_ == 0 ) {
+#if defined(WIN32)
         MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+#else
+        printf("Error: %s\n", bsgl_->System_GetErrorMessage());
+#endif
     }
     bg_ = new bsglSprite(bg_tex_, 0, 0, 800, 600);
 
     gameover_tex_ = bsgl_->Texture_Load("media/gameover.bmp");
     if( gameover_tex_ == 0 ) {
+#if defined(WIN32)
         MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+#else
+        printf("Error: %s\n", bsgl_->System_GetErrorMessage());
+#endif
     }
     gameover_ = new bsglSprite(gameover_tex_, 0, 0, 320, 240);
 
     poker_tex_ = bsgl_->Texture_Load("media/poker.bmp");
     if( poker_tex_ == 0 ) {
+#if defined(WIN32)
         MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+#else
+        printf("Error: %s\n", bsgl_->System_GetErrorMessage());
+#endif
     }
     poker_ = new bsglSprite(poker_tex_, 0, 0, 70, 92);
 
     line_tex_ = bsgl_->Texture_Load("media/line.bmp");
     if( line_tex_ == 0 ) {
+#if defined(WIN32)
         MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+#else
+        printf("Error: %s\n", bsgl_->System_GetErrorMessage());
+#endif
     }
     line_ = new bsglSprite(line_tex_, 0, 0, 116, 268);
 
     beat_tex_ = bsgl_->Texture_Load("media/beat.bmp");
     if( beat_tex_ == 0 ) {
+#if defined(WIN32)
         MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+#else
+        printf("Error: %s\n", bsgl_->System_GetErrorMessage());
+#endif
     }
     beat_ = new bsglSprite(beat_tex_, 0, 0, 116, 268);
 
     red_tex_ = bsgl_->Texture_Load("media/red.bmp");
     if( red_tex_ == 0 ) {
+#if defined(WIN32)
         MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+#else
+        printf("Error: %s\n", bsgl_->System_GetErrorMessage());
+#endif
     }
     red_ = new bsglSprite(red_tex_, 0, 0, 116, 268);
 
     run_tex_ = bsgl_->Texture_Load("media/run.bmp");
     if( run_tex_ == 0 ) {
+#if defined(WIN32)
         MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+#else
+        printf("Error: %s\n", bsgl_->System_GetErrorMessage());
+#endif
     }
     run_ = new bsglAnimation(run_tex_, 6, 6, 0, 0, 186, 152);
 
     blood_tex_ = bsgl_->Texture_Load("media/blood.bmp");
     if( blood_tex_ == 0 ) {
+#if defined(WIN32)
         MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+#else
+        printf("Error: %s\n", bsgl_->System_GetErrorMessage());
+#endif
     }
     blood_ = new bsglSprite(blood_tex_, 0, 0, 158, 126);
 

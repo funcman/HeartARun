@@ -4,7 +4,10 @@ ZTY Studio
 ***********************************************************/
 
 #include "credit_scene.h"
+#include <stdio.h>
+#if defined(WIN32)
 #include <windows.h>
+#endif
 #include "menu_scene.h"
 
 extern Scene* scene;
@@ -15,7 +18,11 @@ CreditScene::CreditScene() {
 
     credit_tex_ = bsgl_->Texture_Load("media/credit.bmp");
     if( credit_tex_ == 0 ) {
+#if defined(WIN32)
         MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+#else
+        printf("Error: %s\n", bsgl_->System_GetErrorMessage());
+#endif
     }
     credit_ = new bsglSprite(credit_tex_, 0, 0, 800, 600);
 }

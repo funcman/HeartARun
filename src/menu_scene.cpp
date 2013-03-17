@@ -4,7 +4,9 @@ ZTY Studio
 ***********************************************************/
 
 #include "menu_scene.h"
+#if defined(WIN32)
 #include <windows.h>
+#endif
 #include "credit_scene.h"
 #include "game_scene.h"
 
@@ -18,13 +20,21 @@ MenuScene::MenuScene() {
 
     menu_tex_ = bsgl_->Texture_Load("media/menu.bmp");
     if( menu_tex_ == 0 ) {
+#if defined(WIN32)
         MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+#else
+        printf("Error: %s\n", bsgl_->System_GetErrorMessage());
+#endif
     }
     menu_ = new bsglSprite(menu_tex_, 0, 0, 800, 600);
 
     story_tex_ = bsgl_->Texture_Load("media/story.bmp");
     if( story_tex_ == 0 ) {
+#if defined(WIN32)
         MessageBoxA(NULL, bsgl_->System_GetErrorMessage(), "Error", MB_OK | MB_ICONERROR | MB_APPLMODAL);
+#else
+        printf("Error: %s\n", bsgl_->System_GetErrorMessage());
+#endif
     }
     story_ = new bsglSprite(story_tex_, 0, 0, 800, 600);
     story_->SetColor(0x00FFFFFF);
